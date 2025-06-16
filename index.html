@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneTap Mood Journal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Complete CSS Styles */
+        * {
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* Emoji Buttons */
+        .emoji-btn {
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            line-height: 1;
+            border: 2px solid #dee2e6;
+            border-radius: 50%;
+            background-color: #ffffff;
+            transition: all 0.3s ease;
+            margin: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .emoji-btn:hover {
+            transform: scale(1.1);
+            background-color: #e9ecef;
+            border-color: #198754;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .emoji-btn:active {
+            transform: scale(0.95);
+        }
+
+        .emoji-btn:focus {
+            outline: none;
+            border-color: #198754;
+            box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.25);
+        }
+
+        /* Emoji buttons container */
+        #emojiButtons {
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        /* Cards */
+        .card {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        .card-body h5 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #198754;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-body small {
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+
+        .card-body p {
+            color: #495057;
+            margin-top: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        /* Delete button styling */
+        .btn-outline-danger {
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            line-height: 1;
+        }
+
+        /* Form Elements */
+        form input,
+        form textarea {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 12px 15px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        form input:focus,
+        form textarea:focus {
+            outline: none;
+            border-color: #198754;
+            box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.1);
+        }
+
+        form textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Buttons */
+        .btn {
+            border-radius: 10px;
+            font-weight: 600;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #198754;
+            border-color: #198754;
+        }
+
+        .btn-primary:hover {
+            background-color: #146c43;
+            border-color: #13653f;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+        /* Calendar Input */
+        #calendar {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #calendar:focus {
+            outline: none;
+            border-color: #198754;
+            box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.1);
+        }
+
+        /* Chart Container */
+        #moodChart {
+            max-width: 100%;
+            height: 300px !important;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            background: #ffffff;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Password Section */
+        #lockPassword {
+            margin-bottom: 10px;
+        }
+
+        #lockToggle {
+            width: 100%;
+        }
+
+        /* Labels */
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+
+        /* Section Headers */
+        h5 {
+            color: #198754;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        /* Container Spacing */
+        .container {
+            max-width: 800px;
+            padding: 0 15px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+            
+            .emoji-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+                margin: 3px;
+            }
+            
+            .navbar-brand {
+                font-size: 1.25rem;
+            }
+            
+            #moodChart {
+                height: 250px !important;
+                padding: 10px;
+            }
+            
+            .card-body {
+                padding: 1rem;
+            }
+            
+            .btn {
+                padding: 8px 16px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .emoji-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+                margin: 2px;
+            }
+            
+            #emojiButtons {
+                gap: 5px;
+                padding: 5px;
+            }
+            
+            .navbar-brand {
+                font-size: 1.1rem;
+            }
+            
+            h5 {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Loading and Empty States */
+        .text-muted {
+            font-style: italic;
+        }
+
+        /* Special highlight for calendar filtered items */
+        .border-primary {
+            border-color: #0d6efd !important;
+            border-width: 2px !important;
+        }
+
+        /* Focus indicators for accessibility */
+        button:focus-visible,
+        input:focus-visible,
+        textarea:focus-visible {
+            outline: 2px solid #198754;
+            outline-offset: 2px;
+        }
+
+        /* Print styles */
+        @media print {
+            .btn, .navbar, #lockPassword, #lockToggle {
+                display: none !important;
+            }
+            
+            .card {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #dee2e6;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-dark bg-success mb-4">
+        <div class="container-fluid justify-content-center">
+            <span class="navbar-brand mb-0 h1 text-white">🧠 OneTap Mood Journal</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div id="emojiContainer" class="text-center my-3">
+            <p class="fw-bold">Quick Mood Tap:</p>
+            <div class="d-flex flex-wrap justify-content-center gap-2" id="emojiButtons">
+                <button class="btn emoji-btn" data-mood="Happy">😊</button>
+                <button class="btn emoji-btn" data-mood="Sad">😢</button>
+                <button class="btn emoji-btn" data-mood="Excited">🤩</button>
+                <button class="btn emoji-btn" data-mood="Tired">😴</button>
+                <button class="btn emoji-btn" data-mood="Angry">😠</button>
+                <button class="btn emoji-btn" data-mood="Calm">😌</button>
+                <button class="btn emoji-btn" data-mood="Anxious">😰</button>
+                <button class="btn emoji-btn" data-mood="Grateful">🙏</button>
+            </div>
+        </div>
+
+        <form id="moodForm" class="my-4">
+            <div class="mb-3">
+                <label for="mood" class="form-label fw-bold">How are you feeling today?</label>
+                <input type="text" class="form-control" id="mood" placeholder="e.g. Happy, Sad, Tired" required>
+            </div>
+            <div class="mb-3">
+                <label for="notes" class="form-label">Optional Notes</label>
+                <textarea id="notes" class="form-control" placeholder="Add any notes..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Mood</button>
+        </form>
+
+        <div class="mb-3">
+            <label for="lockPassword" class="form-label">Set/View Password</label>
+            <input type="password" id="lockPassword" class="form-control" placeholder="Set or enter password">
+            <button class="btn btn-secondary mt-2" id="lockToggle">🔒 Lock/Unlock</button>
+        </div>
+
+        <h5 class="mt-4">📅 Mood Calendar</h5>
+        <input type="date" id="calendar" class="form-control mb-3">
+
+        <h5 class="mt-4">📊 Mood Graph</h5>
+        <div style="position: relative; height: 300px;">
+            <canvas id="moodChart"></canvas>
+        </div>
+
+        <div id="moodList" class="mt-4"></div>
+    </div>
+
+    <script>
+        // Complete JavaScript - Fixed Version
+        let moods = [];
+        let password = null;
+        let isLocked = false;
+        let moodChart = null;
+
+        // Initialize app when DOM is loaded
+        document.addEventListener("DOMContentLoaded", function() {
+            console.log("DOM loaded, initializing app...");
+            loadStoredData();
+            checkPasswordProtection();
+            setupEventListeners();
+            renderMoods();
+            initializeChart();
+            updateChart();
+        });
+
+        // Load stored data from localStorage
+        function loadStoredData() {
+            try {
+                const storedMoods = localStorage.getItem("moods");
+                if (storedMoods) {
+                    moods = JSON.parse(storedMoods);
+                }
+                password = localStorage.getItem("moodPassword");
+                console.log("Loaded data - Moods:", moods.length, "Password set:", !!password);
+            } catch (error) {
+                console.error("Error loading stored data:", error);
+                moods = [];
+                password = null;
+            }
+        }
+
+        // Initialize empty chart
+        function initializeChart() {
+            const ctx = document.getElementById("moodChart");
+            if (!ctx) {
+                console.error("Chart canvas element not found");
+                return;
+            }
+
+            console.log("Initializing chart...");
+            
+            // Destroy existing chart if it exists
+            if (moodChart) {
+                moodChart.destroy();
+                moodChart = null;
+            }
+            
+            try {
+                moodChart = new Chart(ctx, {
+                    type: "bar",
+                    data: {
+                        labels: ["No data yet"],
+                        datasets: [{
+                            label: "Mood Frequency",
+                            data: [0],
+                            backgroundColor: "#e9ecef",
+                            borderColor: "#198754",
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            }
+                        }
+                    }
+                });
+                console.log("Chart initialized successfully");
+            } catch (error) {
+                console.error("Error initializing chart:", error);
+            }
+        }
+
+        // Setup all event listeners
+        function setupEventListeners() {
+            console.log("Setting up event listeners...");
+            
+            // Emoji button clicks
+            const emojiButtons = document.querySelectorAll(".emoji-btn");
+            console.log("Found", emojiButtons.length, "emoji buttons");
+            
+            emojiButtons.forEach((btn, index) => {
+                btn.addEventListener("click", handleEmojiClick);
+                console.log("Event listener added to emoji button", index);
+            });
+
+            // Form submission
+            const form = document.getElementById("moodForm");
+            if (form) {
+                form.addEventListener("submit", handleFormSubmit);
+                console.log("Form event listener added");
+            }
+
+            // Calendar change
+            const calendar = document.getElementById("calendar");
+            if (calendar) {
+                calendar.addEventListener("change", handleCalendarChange);
+                console.log("Calendar event listener added");
+            }
+
+            // Lock/Unlock button
+            const lockToggle = document.getElementById("lockToggle");
+            if (lockToggle) {
+                lockToggle.addEventListener("click", toggleLock);
+                console.log("Lock toggle event listener added");
+            }
+        }
+
+        // Handle emoji button clicks
+        function handleEmojiClick(e) {
+            console.log("Emoji button clicked:", e.target.textContent, e.target.dataset.mood);
+            
+            const moodText = e.target.dataset.mood;
+            const emoji = e.target.textContent;
+            const notesInput = document.getElementById("notes");
+            const note = notesInput ? notesInput.value.trim() : "";
+            
+            if (moodText) {
+                addMoodEntry(moodText, emoji, note);
+                if (notesInput) {
+                    notesInput.value = "";
+                }
+            } else {
+                console.error("No mood data found on button");
+            }
+        }
+
+        // Handle form submission
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            console.log("Form submitted");
+            
+            const input = document.getElementById("mood");
+            const notesInput = document.getElementById("notes");
+            const moodText = input ? input.value.trim() : "";
+            const note = notesInput ? notesInput.value.trim() : "";
+            
+            if (moodText !== "") {
+                addMoodEntry(moodText, "🙂", note);
+                if (input) input.value = "";
+                if (notesInput) notesInput.value = "";
+            } else {
+                alert("Please enter a mood!");
+            }
+        }
+
+        // Add mood entry to storage
+        function addMoodEntry(mood, emoji, note) {
+            console.log("Adding mood entry:", mood, emoji, note);
+            
+            const moodEntry = {
+                id: Date.now(),
+                mood: mood,
+                emoji: emoji,
+                note: note || "",
+                timestamp: new Date().toLocaleString(),
+                date: new Date().toISOString().split('T')[0]
+            };
+            
+            moods.push(moodEntry);
+            
+            try {
+                localStorage.setItem("moods", JSON.stringify(moods));
+                console.log("Mood saved. Total moods:", moods.length);
+            } catch (error) {
+                console.error("Error saving mood:", error);
+            }
+            
+            renderMoods();
+            updateChart();
+        }
+
+        // Render mood entries
+        function renderMoods() {
+            console.log("Rendering moods. Total count:", moods.length);
+            
+            const moodList = document.getElementById("moodList");
+            if (!moodList) {
+                console.error("Mood list element not found");
+                return;
+            }
+
+            if (moods.length === 0) {
+                moodList.innerHTML = "<p class='text-muted text-center'>No mood entries yet. Add your first mood!</p>";
+                return;
+            }
+
+            const moodCards = moods.slice().reverse().map(m => {
+                return `<div class='card mb-2 shadow-sm'>
+                    <div class='card-body'>
+                        <div class='d-flex justify-content-between align-items-start'>
+                            <div>
+                                <h5 class='mb-1'>${m.emoji} ${m.mood}</h5>
+                                <small class='text-muted'>${m.timestamp}</small>
+                                ${m.note ? `<p class='mt-2 mb-0'>📝 ${m.note}</p>` : ""}
+                            </div>
+                            <button class='btn btn-sm btn-outline-danger' onclick='deleteMood(${m.id})'>×</button>
+                        </div>
+                    </div>
+                </div>`;
+            });
+
+            moodList.innerHTML = moodCards.join("");
+            console.log("Moods rendered successfully");
+        }
+
+        // Delete mood entry
+        function deleteMood(id) {
+            console.log("Deleting mood with ID:", id);
+            
+            if (confirm("Are you sure you want to delete this mood entry?")) {
+                moods = moods.filter(m => m.id !== id);
+                
+                try {
+                    localStorage.setItem("moods", JSON.stringify(moods));
+                    console.log("Mood deleted. Remaining moods:", moods.length);
+                } catch (error) {
+                    console.error("Error deleting mood:", error);
+                }
+                
+                renderMoods();
+                updateChart();
+            }
+        }
+
+        // Handle calendar date selection
+        function handleCalendarChange(e) {
+            const selectedDate = e.target.value;
+            console.log("Calendar date selected:", selectedDate);
+            
+            const filteredMoods = moods.filter(m => m.date === selectedDate);
+            console.log("Filtered moods for date:", filteredMoods.length);
+            
+            const moodList = document.getElementById("moodList");
+            if (!moodList) return;
+            
+            if (filteredMoods.length > 0) {
+                const filteredCards = filteredMoods.map(m => {
+                    return `<div class='card mb-2 shadow-sm border-primary'>
+                        <div class='card-body'>
+                            <h5 class='mb-1'>${m.emoji} ${m.mood}</h5>
+                            <small class='text-muted'>${m.timestamp}</small>
+                            ${m.note ? `<p class='mt-2 mb-0'>📝 ${m.note}</p>` : ""}
+                        </div>
+                    </div>`;
+                });
+                moodList.innerHTML = filteredCards.join("");
+            } else {
+                moodList.innerHTML = `<p class='text-muted text-center'>No mood entries for ${selectedDate}</p>`;
+            }
+        }
+
+        // Chart.js mood frequency chart
+        function updateChart() {
+            console.log("Updating chart...");
+            
+            if (!moodChart) {
+                console.error("Chart not initialized");
+                return;
+            }
+
+            const chartData = {};
+            moods.forEach(m => {
+                chartData[m.mood] = (chartData[m.mood] || 0) + 1;
+            });
+            
+            const labels = Object.keys(chartData);
+            const values = Object.values(chartData);
+            
+            console.log("Chart data:", chartData);
+
+            if (labels.length > 0) {
+                moodChart.data.labels = labels;
+                moodChart.data.datasets[0].data = values;
+                moodChart.data.datasets[0].backgroundColor = [
+                    "#198754", "#20c997", "#0dcaf0", "#6f42c1", 
+                    "#d63384", "#fd7e14", "#ffc107", "#dc3545"
+                ];
+                moodChart.update();
+                console.log("Chart updated successfully");
+            } else {
+                moodChart.data.labels = ["No data yet"];
+                moodChart.data.datasets[0].data = [0];
+                moodChart.data.datasets[0].backgroundColor = "#e9ecef";
+                moodChart.update();
+            }
+        }
+
+        // Password protection functions
+        function checkPasswordProtection() {
+            console.log("Checking password protection...");
+            
+            if (password && !sessionStorage.getItem("moodJournalUnlocked")) {
+                isLocked = true;
+                const entered = prompt("🔒 Enter your mood journal password:");
+                if (entered === password) {
+                    sessionStorage.setItem("moodJournalUnlocked", "true");
+                    isLocked = false;
+                    console.log("Password correct, access granted");
+                } else if (entered !== null) { // User didn't cancel
+                    document.body.innerHTML = `
+                        <div class="container text-center mt-5">
+                            <h3>🔒 Access Denied</h3>
+                            <p>Incorrect password. Please refresh and try again.</p>
+                            <button class="btn btn-primary" onclick="location.reload()">Try Again</button>
+                        </div>
+                    `;
+                    return;
+                }
+            }
+            
+            // Prompt to set password if not set (delayed to not interfere with loading)
+            if (!password) {
+                setTimeout(() => {
+                    const setPwd = confirm("🔐 Do you want to set a password for your mood journal?");
+                    if (setPwd) {
+                        const newPwd = prompt("Set your password:");
+                        if (newPwd && newPwd.trim() !== "") {
+                            localStorage.setItem("moodPassword", newPwd.trim());
+                            password = newPwd.trim();
+                            console.log("Password set successfully");
+                        }
+                    }
+                }, 2000); // Wait 2 seconds before prompting
+            }
+        }
+
+        // Toggle lock/unlock functionality
+        function toggleLock() {
+            console.log("Lock toggle clicked");
+            
+            const lockPassword = document.getElementById("lockPassword");
+            const inputPassword = lockPassword ? lockPassword.value.trim() : "";
+            
+            if (!password) {
+                // Set new password
+                if (inputPassword !== "") {
+                    localStorage.setItem("moodPassword", inputPassword);
+                    password = inputPassword;
+                    alert("Password set successfully!");
+                    if (lockPassword) lockPassword.value = "";
+                } else {
+                    alert("Please enter a password to set.");
+                }
+            } else {
+                // Verify existing password
+                if (inputPassword === password) {
+                    const action = confirm("Password correct! Do you want to remove the password protection?");
+                    if (action) {
+                        localStorage.removeItem("moodPassword");
+                        sessionStorage.removeItem("moodJournalUnlocked");
+                        password = null;
+                        alert("Password protection removed!");
+                    }
+                    if (lockPassword) lockPassword.value = "";
+                } else if (inputPassword !== "") {
+                    alert("Incorrect password!");
+                    if (lockPassword) lockPassword.value = "";
+                } else {
+                    alert("Please enter your current password.");
+                }
+            }
+        }
+
+        // Debug function to check if everything is working
+        function debugApp() {
+            console.log("=== DEBUG INFO ===");
+            console.log("Total moods:", moods.length);
+            console.log("Password set:", !!password);
+            console.log("Chart exists:", !!moodChart);
+            console.log("Elements found:");
+            console.log("- Form:", !!document.getElementById("moodForm"));
+            console.log("- Input:", !!document.getElementById("mood"));
+            console.log("- Notes:", !!document.getElementById("notes"));
+            console.log("- Mood List:", !!document.getElementById("moodList"));
+            console.log("- Calendar:", !!document.getElementById("calendar"));
+            console.log("- Lock Toggle:", !!document.getElementById("lockToggle"));
+            console.log("- Emoji buttons:", document.querySelectorAll(".emoji-btn").length);
+        }
+
+        // Make functions globally available for onclick handlers
+        window.deleteMood = deleteMood;
+        window.toggleLock = toggleLock;
+        window.debugApp = debugApp;
+
+        // Optional: Call debug function to check everything is working
+        setTimeout(debugApp, 3000);
+    </script>
+</body>
+</html>
