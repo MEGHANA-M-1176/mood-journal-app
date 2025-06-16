@@ -33,14 +33,16 @@ OneTap Mood Journal is a minimalist approach to mood tracking, emphasizing simpl
 ## 🛠️ Technical Architecture
 
 ### Frontend Stack
-- **HTML5**: Semantic markup with accessibility considerations
-- **CSS3**: Modern styling with CSS Grid and Flexbox layouts
-- **Vanilla JavaScript**: ES6+ features for optimal performance
-- **Progressive Web App**: Manifest configuration and service worker implementation
+- **HTML5**: Semantic markup with accessibility considerations (`index.html`)
+- **CSS3**: Modern styling with responsive design (`style.css`)
+- **Vanilla JavaScript**: ES6+ features for optimal performance (`script.js`)
+- **Progressive Web App**: Complete PWA implementation with manifest and service worker
+- **Icon Set**: Comprehensive icon package for cross-platform compatibility
 
 ### Development Tools
-- **Git**: Version control and collaboration
+- **Git**: Version control and collaboration (`.git/` directory)
 - **GitHub Pages**: Continuous deployment and hosting
+- **PWA Tools**: Complete icon set and manifest for app-like experience
 - **Lighthouse**: Performance and accessibility auditing
 
 ## 🚀 Installation & Setup
@@ -59,8 +61,10 @@ cd mood-journal-app
 
 # Serve locally (using Python)
 python -m http.server 8000
-# OR using Node.js
+# OR using any local server
 npx serve .
+# OR using live-server
+npx live-server
 
 # Access application
 # Open http://localhost:8000 in your browser
@@ -85,18 +89,22 @@ npx serve .
 
 ```
 mood-journal-app/
-├── index.html              # Main application entry point
-├── styles/
-│   ├── main.css           # Core application styles
-│   └── responsive.css     # Media queries and responsive design
-├── scripts/
-│   ├── app.js            # Main application logic
-│   ├── storage.js        # Data persistence layer
-│   └── pwa.js           # PWA functionality
-├── icons/               # Application icons for PWA
-├── manifest.json       # PWA manifest configuration
-├── sw.js              # Service worker for offline functionality
-└── README.md          # Project documentation
+├── index.html                    # Main application entry point (27 KB)
+├── script.js                     # Main application logic (14 KB)
+├── style.css                     # Application styles (6 KB)
+├── service-worker.js             # Service worker for offline functionality (4 KB)
+├── manifest.json                 # PWA manifest configuration (2 KB)
+├── LICENSE                       # MIT License file (2 KB)
+├── README.md                     # Project documentation (1 KB)
+├── favicon.ico                   # Browser favicon (15 KB)
+├── favicon.svg                   # Scalable favicon (141 KB)
+├── android-chrome-192x192.png    # Android icon 192x192 (14 KB)
+├── android-chrome-512x512.png    # Android icon 512x512 (66 KB)
+├── apple-touch-icon.png          # iOS app icon (13 KB)
+├── favicon-96x96.png             # Standard favicon (5 KB)
+├── icon-192.png                  # PWA icon 192x192 (0 KB)
+├── icon-512.png                  # PWA icon 512x512 (0 KB)
+└── .git/                         # Git version control directory
 ```
 
 ## 🤝 Contributing
@@ -120,7 +128,9 @@ Contributions are welcome and appreciated. Please follow these guidelines:
 - **Lighthouse Score**: 95+ (Performance, Accessibility, Best Practices, SEO)
 - **First Contentful Paint**: < 1.5s
 - **Time to Interactive**: < 2.5s
-- **Bundle Size**: < 100KB (uncompressed)
+- **Total Bundle Size**: ~47 KB (excluding icons)
+- **Core Files**: 3 main files (HTML, CSS, JS)
+- **PWA Ready**: Complete manifest and service worker implementation
 
 ## 📄 License
 
