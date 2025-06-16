@@ -104,7 +104,6 @@ mood-journal-app/
 ├── favicon-96x96.png             # Standard favicon (5 KB)
 ├── icon-192.png                  # PWA icon 192x192 (0 KB)
 ├── icon-512.png                  # PWA icon 512x512 (0 KB)
-└── .git/                         # Git version control directory
 ```
 
 ## 🤝 Contributing
@@ -125,12 +124,10 @@ Contributions are welcome and appreciated. Please follow these guidelines:
 
 ## 📊 Performance Metrics
 
-- **Lighthouse Score**: 95+ (Performance, Accessibility, Best Practices, SEO)
-- **First Contentful Paint**: < 1.5s
-- **Time to Interactive**: < 2.5s
-- **Total Bundle Size**: ~47 KB (excluding icons)
-- **Core Files**: 3 main files (HTML, CSS, JS)
-- **PWA Ready**: Complete manifest and service worker implementation
+- **Optimized for performance** with offline-first architecture
+- **Fast load times** on modern browsers
+- **Responsive** and accessible design
+- **PWA-Ready**: manifest and service worker fully implemented
 
 ## 📄 License
 
@@ -140,14 +137,12 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 MIT License - Copyright (c) 2024 Meghana M
 Permission is hereby granted, free of charge, to any person obtaining a copy...
 ```
-
-## 👨‍💻 Author
+## 👩‍💻 Author
 
 **Meghana M**
 - GitHub: [@MEGHANA-M-1176](https://github.com/MEGHANA-M-1176)
-- LinkedIn: [Connect with me](https://linkedin.com/in/your-profile)
-- Email: your.email@domain.com
-
+- LinkedIn: [Connect with me](https://www.linkedin.com/in/meghana-m-aa84912a8)
+- Email: meghanamz1111@gmail.com
 ## 🙏 Acknowledgments
 
 - Progressive Web App documentation from [web.dev](https://web.dev)
