@@ -11,21 +11,6 @@ Built with 💛 **HTML**, **CSS**, and **JavaScript**.
 
 ---
 
-## 📑 Table of Contents
-
-- [🌟 Features](#-features)  
-- [🚀 Live Demo](#-live-demo)  
-- [📷 App Preview](#-app-preview)  
-- [🎞️ GIF Preview](#-gif-preview)  
-- [📦 Technologies Used](#-technologies-used)  
-- [🛠️ How to Run Locally](#️-how-to-run-locally)  
-- [💌 Contributing](#-contributing)  
-- [📄 License](#-license)  
-- [🙋‍♀️ Author](#-author)  
-- [🌟 Support](#-support)
-
----
-
 ## 🌟 Features
 
 - ✅ One-tap mood tracking: Good / Okay / Bad  
@@ -76,10 +61,8 @@ Built with 💛 **HTML**, **CSS**, and **JavaScript**.
 ## 🛠️ How to Run Locally
 
 1. **Clone the repository**:
-
    ```bash
    git clone https://github.com/MEGHANA-M-1176/mood-journal-app.git
-
 
 ## 📄 License
 
