@@ -1,4 +1,4 @@
-// script.js - Complete OneTap Mood Journal
+
 let moods = JSON.parse(localStorage.getItem("moods")) || [];
 let password = localStorage.getItem("moodPassword") || null;
 let isLocked = false;
@@ -11,7 +11,7 @@ const calendar = document.getElementById("calendar");
 const lockPassword = document.getElementById("lockPassword");
 const lockToggle = document.getElementById("lockToggle");
 
-// Initialize app when DOM is loaded
+
 document.addEventListener("DOMContentLoaded", function() {
     console.log("DOM loaded, initializing app...");
     checkPasswordProtection();
@@ -21,12 +21,12 @@ document.addEventListener("DOMContentLoaded", function() {
     updateChart();
 });
 
-// Initialize empty chart
+
 function initializeChart() {
     const ctx = document.getElementById("moodChart");
     if (ctx) {
         console.log("Initializing chart...");
-        // Destroy existing chart if it exists
+        
         if (window.moodChart) {
             window.moodChart.destroy();
         }
@@ -71,11 +71,10 @@ function initializeChart() {
     }
 }
 
-// Setup all event listeners
 function setupEventListeners() {
     console.log("Setting up event listeners...");
     
-    // Emoji button clicks
+    
     const emojiButtons = document.querySelectorAll(".emoji-btn");
     console.log("Found", emojiButtons.length, "emoji buttons");
     
@@ -84,26 +83,26 @@ function setupEventListeners() {
         console.log("Event listener added to emoji button", index);
     });
 
-    // Form submission
+
     if (form) {
         form.addEventListener("submit", handleFormSubmit);
         console.log("Form event listener added");
     }
 
-    // Calendar change
+    
     if (calendar) {
         calendar.addEventListener("change", handleCalendarChange);
         console.log("Calendar event listener added");
     }
 
-    // Lock/Unlock button
+    
     if (lockToggle) {
         lockToggle.addEventListener("click", toggleLock);
         console.log("Lock toggle event listener added");
     }
 }
 
-// Handle emoji button clicks
+
 function handleEmojiClick(e) {
     console.log("Emoji button clicked:", e.target.textContent, e.target.dataset.mood);
     
@@ -121,7 +120,7 @@ function handleEmojiClick(e) {
     }
 }
 
-// Handle form submission
+
 function handleFormSubmit(e) {
     e.preventDefault();
     console.log("Form submitted");
@@ -138,7 +137,7 @@ function handleFormSubmit(e) {
     }
 }
 
-// Add mood entry to storage
+
 function addMoodEntry(mood, emoji, note) {
     console.log("Adding mood entry:", mood, emoji, note);
     
@@ -159,7 +158,7 @@ function addMoodEntry(mood, emoji, note) {
     updateChart();
 }
 
-// Render mood entries
+
 function renderMoods() {
     console.log("Rendering moods. Total count:", moods.length);
     
@@ -191,7 +190,7 @@ function renderMoods() {
     console.log("Moods rendered successfully");
 }
 
-// Delete mood entry
+
 function deleteMood(id) {
     console.log("Deleting mood with ID:", id);
     
@@ -204,7 +203,7 @@ function deleteMood(id) {
     }
 }
 
-// Handle calendar date selection
+
 function handleCalendarChange(e) {
     const selectedDate = e.target.value;
     console.log("Calendar date selected:", selectedDate);
@@ -229,7 +228,7 @@ function handleCalendarChange(e) {
     }
 }
 
-// Chart.js mood frequency chart
+
 function updateChart() {
     console.log("Updating chart...");
     
@@ -293,7 +292,7 @@ function updateChart() {
     }
 }
 
-// Password protection functions
+
 function checkPasswordProtection() {
     console.log("Checking password protection...");
     
@@ -316,7 +315,7 @@ function checkPasswordProtection() {
         }
     }
     
-    // Prompt to set password if not set (delayed to not interfere with loading)
+    
     if (!password) {
         setTimeout(() => {
             const setPwd = confirm("🔐 Do you want to set a password for your mood journal?");
@@ -328,18 +327,18 @@ function checkPasswordProtection() {
                     console.log("Password set successfully");
                 }
             }
-        }, 2000); // Wait 2 seconds before prompting
+        }, 2000); 
     }
 }
 
-// Toggle lock/unlock functionality
+
 function toggleLock() {
     console.log("Lock toggle clicked");
     
     const inputPassword = lockPassword ? lockPassword.value.trim() : "";
     
     if (!password) {
-        // Set new password
+        
         if (inputPassword !== "") {
             localStorage.setItem("moodPassword", inputPassword);
             password = inputPassword;
@@ -349,7 +348,7 @@ function toggleLock() {
             alert("Please enter a password to set.");
         }
     } else {
-        // Verify existing password
+    
         if (inputPassword === password) {
             const action = confirm("Password correct! Do you want to remove the password protection?");
             if (action) {
@@ -368,7 +367,6 @@ function toggleLock() {
     }
 }
 
-// Debug function to check if everything is working
 function debugApp() {
     console.log("=== DEBUG INFO ===");
     console.log("Total moods:", moods.length);
@@ -405,6 +403,6 @@ setInterval(() => {
 }, 3600000); // Every hour
 */
 
-// Make functions globally available for onclick handlers
+
 window.deleteMood = deleteMood;
 window.toggleLock = toggleLock;
