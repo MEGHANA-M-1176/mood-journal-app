@@ -15,7 +15,7 @@ const urlsToCache = [
     "https://cdn.jsdelivr.net/npm/chart.js"
 ];
 
-// Install event - cache resources
+
 self.addEventListener("install", event => {
     console.log('Service Worker installing...');
     event.waitUntil(
@@ -31,7 +31,7 @@ self.addEventListener("install", event => {
     self.skipWaiting();
 });
 
-// Activate event - clean up old caches
+
 self.addEventListener("activate", event => {
     console.log('Service Worker activating...');
     event.waitUntil(
@@ -51,14 +51,14 @@ self.addEventListener("activate", event => {
     );
 });
 
-// Fetch event - serve from cache, fall back to network
+
 self.addEventListener("fetch", event => {
     // Skip non-GET requests
     if (event.request.method !== 'GET') {
         return;
     }
 
-    // Skip chrome-extension requests
+
     if (event.request.url.startsWith('chrome-extension://')) {
         return;
     }
@@ -66,7 +66,7 @@ self.addEventListener("fetch", event => {
     event.respondWith(
         caches.match(event.request)
             .then(response => {
-                // Return cached version or fetch from network
+                
                 if (response) {
                     console.log('Serving from cache:', event.request.url);
                     return response;
@@ -75,12 +75,12 @@ self.addEventListener("fetch", event => {
                 console.log('Fetching from network:', event.request.url);
                 return fetch(event.request)
                     .then(response => {
-                        // Don't cache non-successful responses
+                    
                         if (!response || response.status !== 200 || response.type !== 'basic') {
                             return response;
                         }
 
-                        // Clone the response for caching
+            
                         const responseToCache = response.clone();
                         caches.open(CACHE_NAME)
                             .then(cache => {
@@ -91,7 +91,7 @@ self.addEventListener("fetch", event => {
                     })
                     .catch(error => {
                         console.error('Fetch failed:', error);
-                        // Return a fallback response or throw the error
+                        
                         throw error;
                     });
             })
